@@ -22,7 +22,8 @@ return '\n';
 //// 책에는 여기까지. 무엇을 더 고치면 좋을까요?
 
 // step 4. 제 마음대로 추가 수정.
-for (int j = n + 1; j < 100; j++) // for loop 를 도는 부분은 꼭 필요한 것이 아니면 별도의 counter 사용. local 변수를 사용하면 local 변수의 변화를 놓치기 쉬움. 
+// for loop 를 도는 부분은 꼭 필요한 것이 아니면 별도의 counter 사용. local 변수를 사용하면 local 변수의 변화를 놓치기 쉬움. 
+for (int j = n + 1; j < 100; j++) 
     field[j] = '\0';
 *i = '\O';
 return '\n';
