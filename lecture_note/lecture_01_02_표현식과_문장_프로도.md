@@ -171,18 +171,101 @@ scanf("%d", &profit[yr]);
 if( !(c == 'y' || c == 'Y') )
     return;
 
-length = (length < BUFSIZE) 
+length = (length < BUFSIZE) ? length : BUFSIZE;
 
+flag = flag ? 0 : 1 ;
+
+quote = (*line == '"') ? 1 : 0;
+
+if (val & 1)
+    bit = 1;
+else
+    bit = 0;
+```
+
+```c++
+// 개선 1
+if( !(c == 'y' || c == 'Y') )
+    return;
+
+// not(!) 을 줄여서 내용을 보기 편하게. 
+if(c != 'y' && c != 'Y')
+    return; 
+
+
+// 개선 2
+length = (length < BUFSIZE) ? length : BUFSIZE;
+// -> length < BUFSIZE 일 경우에는 length 그대로임.
+// -> length >= BUFSIZE 일 경우에 length = BUFSIZE 가 됨.
+if (length >= BUFSIZE)
+    length = BUFSIZE;
+
+// 논리적으로는 위가 맞지만, length == BUFSIZE 이면 이 값이든 저 값이든 똑같음.
+if (length > BUFSIZE)
+    length = BUFSIZE;
+
+
+// 개선 3
+flag = flag ? 0 : 1 ;
+// flag 가 true 이면 0
+flag = !(flag)
+
+// 사실 flag 가 int 나 float 등 bool 이 아닌 다른 수를 나타내는 변수일 경우에는
+// if 를 통하여 값을 직접 지정 해야 하며, 코드가 삼항 연산자 이상 간단해지지 않음.
+// 문제가 코드를 개선한다고 표현하는것으로 봐서 bool 이라는 전제를 하고 문제에 접근 함. 
+
+
+
+// 개선 4
+quote = (*line == '"') ? 1 : 0;
+// quote 는 *line 이 " 이면 1, 아니면 0
+quote = (*line == '"');
+
+// 개선 3과 같이 bool 이라는 가정하에 가능.
+// 값이 있어야 하면 삼항 연산자가 가장 간단함.
+
+
+// 개선 5
+if (val & 1)
+    bit = 1;
+else
+    bit = 0;
+
+// bit 이 bool 이라는 가정 하에,
+bit = val & 1;
+
+// 값을 표현한다면 삼항연산자가 더 간단함.
+// 대신 연산자 우선순위를 조심하여 삼항연산자의 내부 요소는 각각 괄호로 묶어주는것이 안전함. 
+bit = (val & 1) ? 1 : 0;
 ```
 
 ## 연습 1-5 어느 부분이 잘못되었을까? 
 ```c++
-// 
+int read(int *ip) {
+    scanf("%d", ip);
+    return *ip;
+}
 
+insert(&graph[vert], read(&val), read(&ch));
+
+// 본문 내용 중, scanf 의 경우 실행 싲머에 값의 모호성에 대한 부분이 있었음.
+// compiler 에 따라서 실행되는 순서나, 실행의 순차 보장성에 따라서 값이 달라질 가능성이 있음. 
 ```
 
 ## 연습 1-6 계산 순서에 따라 이 코드의 결과로 나올 수 있는 여러 출력 값을 모두 나열해 보라. 
 ```c++
-// 
-
+n = 1;
+printf("%d %d\n", n++, n++);
+ 
 ```
+위 코드를 최대한 많은 컴파일러로 돌려봐서 실제로 어떻게 되는지 알아보자. 
+
+https://ideone.com/onXogd : 1 2  C (clang 8.0)
+
+https://ideone.com/btk3yQ  :  2 1 C++ (gcc 4.3.2)
+
+https://ideone.com/9rwPMy  :  2 1 C++ (gcc 8.3)
+
+https://ideone.com/MGDof9  :  2 1 C++ (C++14)
+
+
