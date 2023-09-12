@@ -8,7 +8,7 @@ for(n++;n<100;field[n++]='\0');
 *i = '\0'; return('\n');
 
 // step 2. 들여쓰기 조정 -> for 문과 각 문장을 한 줄 단위로 수정 
-for(n++;n<10;field[n++]='\0')
+for(n++;n<100;field[n++]='\0')
     ;
 *i = '\0';
 return('\n');
@@ -248,7 +248,7 @@ int read(int *ip) {
 
 insert(&graph[vert], read(&val), read(&ch));
 
-// 본문 내용 중, scanf 의 경우 실행 싲머에 값의 모호성에 대한 부분이 있었음.
+// 본문 내용 중, scanf 의 경우 실행 시점에 값의 모호성에 대한 부분이 있었음.
 // compiler 에 따라서 실행되는 순서나, 실행의 순차 보장성에 따라서 값이 달라질 가능성이 있음. 
 ```
 
