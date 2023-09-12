@@ -46,7 +46,7 @@ while ((c = getchar()) != EOF && isupper(c))
 ```C
 #define ROUND_TO_INT(x)  ((int)  ((x) + (((x) > 0 )? 0.5 : -0.5)))
 
-size = ROUND_TO_INT(sqrt(dx*dx) + (dy * dy));
+size = ROUND_TO_INT(sqrt(dx*dx + dy * dy));
 ```
 
     위의 코드에서는 매크로 함수에서 x 가 2번 쓰였기 때문에 sqrt 함수가 2번 사용된다.
