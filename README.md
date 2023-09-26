@@ -3,6 +3,8 @@
 <aside>
 💯 2023.09.05 - 2024.02.13(예정) 진행되는 ‘프로그래밍 수련법’ 읽기 모임
 
+- notion : https://sulky-ranunculus-577.notion.site/f76c3f46e4f041619fa823988665d597
+
 </aside>
 
 # 📃 목표 및 스터디 방법
