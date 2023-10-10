@@ -94,6 +94,69 @@ Nameval* nrlookup(Nameval* treep, char* name) {
 - 트리를 순회할 방향과, 언제 노드를 함수에 전달할지 등을 고려해야 한다.
 - 예를 들어 이진 검색 트리면 왼쪽 절반을 오른쪽 절반보다 먼저 처리를 해야하고, 족보처럼 트리 구조가 되어 있으면 트리가 표현하는 관계에 따라 리프 노드를 방문하는 순서가 달라진다.
 
+## 중위 순회법
+
+- 왼쪽 하위트리를 방문한 다음에 그 노드에 대한 연산을 수행하고 그 후에 오른쪽 하위 트리를 방문하는 방식을 쓴다.
+- 노드를 순서대로 출력하는 일처럼 노드를 정렬된 순서대로 처리해야 할 때 중위 순회법을 쓴다.
+```cpp
+// applyinorder : treep에 fn을 중위 순회법으로 적용
+void applyinorder(Nameval* treep, void(*fn)(Nameval*, void*), void* arg) {
+	if (treep == NULL) return;
+	applyinorder(treep->left, fn, arg);
+	(*fn)(treep, arg);
+	applyinorder(treep->right, fn, arg);
+
+}
+```
+- 모든 노드를 순서대로 출력하고 싶으면 다음과 같은 코드를 작성하면 된다.
+
+```cpp
+applyinorder(treep,printnv,"%s : %x \n");
+```
+
+
+## 후위 순회법
+- 후위 순회법은 자식들을 모두 방문한 다음 현재 노드에 대한 연산을 호출한다.
+```cpp
+// applypostorder : treep에 fn을 후위 순회법으로 적용
+void applypostorder(Nameval* treep, void(*fn)(Nameval*, void*), void* arg) {
+	if (treep == NULL) return;
+	applypostorder(treep->left, fn, arg);
+	
+	applypostorder(treep->right, fn, arg);
+    (*fn)(treep, arg);
+
+}
+```
+- 후위 순회법은 노드에 대한 연산을 노드의 하위 트리에 의존할때 사용(트리의 높이를 구하는 작업 등)
+
+## 전위 순회법
+
+- 전위 순회법은 거의 쓰이지 않으므로 생략
+
+
+## B 트리
+- 한 노드가 어려 자식을 가르킬수 있다.
+- B 트리는 보조 저장 장치에 정보를 저장하고 관리하는데 널리 쓰인다.
+
+## 파스 트리
+
+- 파스 트리는 프로그래밍 작업에서 문장이나 수식을 표현할때 사용한다.
+- ex) mid = (low + high) / 2;
+```cpp
+            [=]
+          /    \
+        [mid]   [/]
+               /   \
+              +      2
+             / \
+            low  high
+```
+- 이와 같이 트리를 후위 순회법으로 계산하면 연산이 정상적으로 된다.
+- 파스 트리는 9장에서 자세히 다룬다.
+
+
+
 
 
 [ref]
