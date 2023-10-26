@@ -2,13 +2,13 @@
 
 ## 트리?
 - 트리는 아이템(노드) 마다 어떤 값을 가지고 있고 0개 또는 그 이상의 다른 아이템(노드)를 가르킬수 있다.
-![Alt text](../image_bear/image-1.png)
+![Alt text](./lecture_note/image/0208/image-1.png)
 
 
 - 트리의 구조 종류 : 삼항 트리, 이진 트리, 이진 검색 트리(왼쪽 노드의 데이터가 현재 가르키고 있는 노드보다 작고 오른쪽 노드의 데이터는 현재가르키고 있는 노드보다 커야함) 
 - 이진 검색 트리는 탐색 시간이 O(log N) 이다!
     
-![Alt text](../image_bear/image.png)
+![Alt text](./lecture_note/image/0208/image.png)
 
 - Nameval을 이진 검색 트리로 나타낸다. 좌우 분류 기준은 이름을 나타내는 문자열의 아스키 값이다.
 ``` c++
