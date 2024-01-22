@@ -22,8 +22,11 @@
 
 - 알고스팟(algospot) 에서 모 문제에 제출된 답안 별 수행속도
 - C / C++ 을 이기기는 어려움. (수행시간 0 ~ 5ms)
-- 루비 (rb) : 48ms, python, python3, pypy : 38 ~ 98ms 등. 
-![image](https://github.com/yoons6548/the-practice-of-programming/lecture_note/image/0706/solution_list_by_various_languages.png)
+- 루비 (rb) : 48ms, python, python3, pypy : 38 ~ 98ms 등.
+
+  
+![Untitled](./image/0706/solution_list_by_various_languages.png)
+
 </details>
 
 ### 책에서 나온 내용들
