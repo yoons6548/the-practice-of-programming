@@ -55,3 +55,130 @@
         return 0;
     }
 ```
+
+- 만약 정규 표현식이 ^로 시작하면 텍스트는 시작할때 그 표현식의 나머지 부분과 일치해야한다.
+- 그렇지 않다면 텍스트를 따라 가면서 matchhere 함수를 호출해 그 텍스트 어느 부분에서인가 일치가 일어나는지 확인한다.
+
+``` c++
+// matchhere 텍스트 시작 부분에서 regexp를 찾는다.
+int matchhere ( char* regexp, char *text){
+    if (regexp[0]=='\0')
+    return 1;
+    if(regexp[1] == '*')
+    return matchstar(regexp[0],regexp+2, text);
+    if(regexp[0] == '$' && regexp[1] == '\0')
+    return *text == '\0';
+    if(*text!='\0' && (regexp[0]=='.' || regexp[0]==*text))
+    return matchhere(regexp+1, text+1);
+    return 0;
+}
+```
+
+- 정규 표현식 중간에 나오는 ^나 $는 메타 문자가 아니라 그냥 리터럴 문자로 취급한다.
+
+- 까다로운 경우가 하나 있는 데 그중 하나가 x* 이다.
+
+- 이런 경우에는 matchstar 함수에 별 문자의 피연산자인 x를 첫 인자로 넣고 별문자 뒤의 표현식 패턴과 텍스트를 후속 인자들로 넣어 호출한다.
+
+```c++
+// matchstar 텍스트 시작 부분에서 C*regexp를 찾는다.
+
+int matchstar(int c, char *regexp, char *text){
+    do{
+        if(matchhere(regexp, text))
+        return 1;
+        
+    }while(*text != '\0' && (*text++ == c || c == '.'));
+    return 0;
+}
+```
+- 이 루프는 텍스트가 나머지 정규 표현식과 일치하는지 확인하며 첫 문자가 별 문자의 피연산자와 일치하는 한 텍스트의 각 위치에서 계속 시도한다.
+
+
+- main문은 다음과 같다.
+
+```c++
+// grep main : 파일에서 regexp를 찾는다
+int main(int argc, char *argv[]){
+    int i,nmatch;
+    FILE *f;
+
+    setprogname("grep");
+
+    if(argc<2) eprintf("usage : grep regexp [file ...]");
+    nmatch = 0;
+    if(argc == 2){
+        if(grep(argv[1], stdin, NULL))
+        nmatch++;
+
+    }else{
+        for(i = 2;i <argc; i++){
+            f = fopen(argv[i],"r");
+            if(f == NULL){
+                weprintf("cant open %s : ",argv[i]);
+                continue;
+            }
+            if(grep(argv[1], f, argc>3 ? argv[i]: NULL)>0)
+                nmatch++;
+            fclose(f);
+        }
+    }
+    return nmatch == 0;
+}
+
+
+
+
+```
+
+- 이 프로그램은 한번이라도 일치하면 0을 일치하지 않으면 1을 에러가 발생하는 2를 리턴한다.
+
+- grep 함수는 다음과 같다
+
+```c++
+// grep 파일에서 regexp를 검색한다.
+
+int grep ( char *regexp, FILE *f, char *name){
+    int n, nmatch;
+    char buf[BUFSIZE];
+
+    nmatch = 0;
+    while(fgets(buf,sizeof buf, f) != NULL){
+        n= strlen(buf);
+        if(n>0 && buf[n-1] == '\n')
+            buf[n-1] = '\0';
+        if(match(regexp,buf)){
+            nmatch++;
+            if(name != NULL)
+                printf("%s:",name);
+            printf("%s\n", buf);
+        }
+    }
+    return nmatch;
+}
+```
+
+- main의 함수에서는 파일을 여는데 실패해도 종료하지 않고 문제를 보고하고 계속 진행한다.
+
+- grep 에서 파일을 하나만 선택하면 파일 이름이 출력이 되지 않지만 찾는 것이 파일 여러개면 파일 명도 같이 출력된다.
+
+- 구현한 match 함수는 일치하는 부분을 찾자마자 리턴하지만 텍스트 에디터의 바꾸기 기능을 구현할 떄는 왼쪽으로 가장긴 것이 일치하는게 더 적합하다.
+- 따라서 matchstar를 그리디 하게 만든다.
+
+``` c++
+// matchstar : c*regexp와 왼쪽으로 가장 긴 일치 부분을 찾는다
+
+int matchstar (int c, char *regexp, char *text)
+{
+    char *t;
+
+    for(t = text; *t!='\0' && (*t == c || c == '.'); t++);
+    do{
+        if(matchhere(regexp,t))
+        return 1;
+    }while(t-->text);
+    return 0;
+}
+```
+
+- grep이 어떤 식의 일치 판단 방법을 쓰느냐는 중요하지 않다. 그냥 일치하는 부분이 있는지 검사하고 전체 줄을 출력할 뿐이다.
